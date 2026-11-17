@@ -1,0 +1,2319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinkFlow English — American English Linking Coach</title>
+  <style>
+    /* =========================================================================
+       1. THEME VARIABLES & RESPONSIVE BASE STYLES (Light & Dark Mode)
+       ========================================================================= */
+    :root {
+      --bg-page: #f3f6fb;
+      --bg-card: #ffffff;
+      --bg-subtle: #eaf0f8;
+      --bg-input: #ffffff;
+      --text-main: #162033;
+      --text-muted: #495670;
+      --text-zh: #314b7a;
+      --border: #ccd6e6;
+      --primary: #1a5cd6;
+      --primary-hover: #1449ad;
+      --primary-text: #ffffff;
+      --accent-soft: #e4edfc;
+      --success-bg: #e6f6ed;
+      --success-border: #268251;
+      --success-text: #135230;
+      --warn-bg: #fff6e5;
+      --warn-border: #c4760e;
+      --warn-text: #734200;
+      --error-bg: #fdecec;
+      --error-border: #c73838;
+      --error-text: #801b1b;
+      --link-pill-bg: #d9e7ff;
+      --link-pill-text: #0d3a8c;
+      --shadow: 0 4px 16px rgba(18, 34, 66, 0.08);
+      --radius: 14px;
+    }
+
+    [data-theme="dark"] {
+      --bg-page: #0e1522;
+      --bg-card: #172134;
+      --bg-subtle: #1f2c45;
+      --bg-input: #111929;
+      --text-main: #eff3fb;
+      --text-muted: #b0bed8;
+      --text-zh: #8cb2f5;
+      --border: #314161;
+      --primary: #4d8dff;
+      --primary-hover: #6aa1ff;
+      --primary-text: #081224;
+      --accent-soft: #1d2f52;
+      --success-bg: #133324;
+      --success-border: #38b373;
+      --success-text: #9ef0c3;
+      --warn-bg: #382810;
+      --warn-border: #e59a24;
+      --warn-text: #ffd68a;
+      --error-bg: #3b181b;
+      --error-border: #e35d5d;
+      --error-text: #ffb3b3;
+      --link-pill-bg: #223b6b;
+      --link-pill-text: #b8d3ff;
+      --shadow: 0 6px 20px rgba(0, 0, 0, 0.36);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow-x: hidden;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 16px 16px 48px;
+    }
+
+    /* =========================================================================
+       2. HEADER & LEVEL PROGRESS NAVIGATION
+       ========================================================================= */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-subtitle {
+      margin: 2px 0 0;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .zh {
+      color: var(--text-zh);
+      font-weight: 500;
+    }
+
+    .theme-btn {
+      min-height: 48px;
+      min-width: 48px;
+      padding: 0 14px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .theme-btn:hover {
+      border-color: var(--primary);
+    }
+
+    .level-nav {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .level-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .level-tab {
+      min-height: 52px;
+      padding: 8px 6px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.25;
+      transition: all 0.15s ease;
+    }
+
+    .level-tab.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--primary-text);
+    }
+
+    .level-tab.active .tab-sub {
+      color: var(--primary-text);
+      opacity: 0.92;
+    }
+
+    .level-tab.completed:not(.active) {
+      border-color: var(--success-border);
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+
+    .level-tab.locked {
+      opacity: 0.52;
+      cursor: not-allowed;
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+    }
+
+    .tab-sub {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: var(--bg-subtle);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    /* =========================================================================
+       3. CARDS, TYPOGRAPHY & TOUCH-FRIENDLY BUTTONS (>= 48px)
+       ========================================================================= */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .badge-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+
+    .instruction-box {
+      background: var(--bg-subtle);
+      border-left: 4px solid var(--primary);
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 0.98rem;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .btn {
+      min-height: 48px;
+      min-width: 48px;
+      padding: 10px 18px;
+      border-radius: 11px;
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s ease, transform 0.05s ease, border-color 0.15s ease;
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn:disabled {
+      opacity: 0.46;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--primary-text);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+      border-color: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      border-color: var(--primary);
+    }
+
+    .btn-record {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .btn-record.recording {
+      background: var(--error-border);
+      color: #ffffff;
+      animation: pulse 1.2s infinite;
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(199, 56, 56, 0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(199, 56, 56, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(199, 56, 56, 0); }
+    }
+
+    /* =========================================================================
+       4. AUDIO PLAYER BAR, PLAY LIMIT COUNTER & SPEED TOGGLE
+       ========================================================================= */
+    .audio-panel {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .audio-top-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .play-counter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      background: var(--bg-card);
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .play-counter-pill.exhausted {
+      border-color: var(--error-border);
+      background: var(--error-bg);
+      color: var(--error-text);
+    }
+
+    .voice-tag {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .audio-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .speed-group {
+      display: inline-flex;
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      overflow: hidden;
+      background: var(--bg-card);
+    }
+
+    .speed-btn {
+      min-height: 48px;
+      padding: 0 14px;
+      border: none;
+      background: transparent;
+      color: var(--text-main);
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .speed-btn.active {
+      background: var(--primary);
+      color: var(--primary-text);
+    }
+
+    .speed-btn:disabled {
+      opacity: 0.46;
+      cursor: not-allowed;
+    }
+
+    .audio-status {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .hidden-audio-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: var(--bg-card);
+      border: 1px dashed var(--border);
+      margin-bottom: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* =========================================================================
+       5. LEVEL 1 MCQ OPTIONS & FEEDBACK
+       ========================================================================= */
+    .mcq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .mcq-option {
+      min-height: 52px;
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      border-radius: 11px;
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 1rem;
+      line-height: 1.45;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .mcq-option:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: var(--accent-soft);
+    }
+
+    .mcq-option.selected {
+      border-color: var(--primary);
+      background: var(--accent-soft);
+      font-weight: 700;
+    }
+
+    .mcq-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--bg-subtle);
+      font-weight: 800;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .mcq-option.selected .mcq-letter {
+      background: var(--primary);
+      color: var(--primary-text);
+    }
+
+    /* =========================================================================
+       6. LEVEL 2 DICTATION, DIFF COMPARISON & LINKING HIGHLIGHTS
+       ========================================================================= */
+    .dictation-input {
+      width: 100%;
+      min-height: 84px;
+      padding: 12px 14px;
+      border-radius: 11px;
+      border: 2px solid var(--border);
+      background: var(--bg-input);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      resize: vertical;
+    }
+
+    .dictation-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .banner {
+      padding: 14px 16px;
+      border-radius: 11px;
+      margin-top: 14px;
+      border: 1.5px solid;
+    }
+
+    .banner-hint {
+      background: var(--warn-bg);
+      border-color: var(--warn-border);
+      color: var(--warn-text);
+    }
+
+    .banner-success {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .banner-error {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .diff-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-top: 10px;
+    }
+
+    .diff-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .word-match {
+      display: inline-block;
+      padding: 2px 6px;
+      margin: 2px;
+      border-radius: 6px;
+      background: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid var(--success-border);
+      font-weight: 600;
+    }
+
+    .word-miss {
+      display: inline-block;
+      padding: 2px 6px;
+      margin: 2px;
+      border-radius: 6px;
+      background: var(--error-bg);
+      color: var(--error-text);
+      border: 1px dashed var(--error-border);
+      font-weight: 600;
+    }
+
+    .linked-sentence {
+      font-size: 1.12rem;
+      font-weight: 600;
+      line-height: 1.8;
+      margin: 8px 0;
+    }
+
+    .link-mark {
+      display: inline-block;
+      background: var(--link-pill-bg);
+      color: var(--link-pill-text);
+      padding: 1px 8px;
+      border-radius: 7px;
+      font-weight: 800;
+      border-bottom: 2.5px solid var(--primary);
+    }
+
+    .link-list {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    .link-list li {
+      margin-bottom: 6px;
+    }
+
+    /* =========================================================================
+       7. LEVEL 3 SHADOWING, RECORDER & SELF-CHECK
+       ========================================================================= */
+    .compare-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .compare-item audio {
+      width: 100%;
+      margin-top: 8px;
+      height: 44px;
+    }
+
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
+      cursor: pointer;
+      min-height: 48px;
+    }
+
+    .check-row input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      accent-color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    /* =========================================================================
+       8. SUMMARY & FINAL BADGE SCREEN
+       ========================================================================= */
+    .score-hero {
+      text-align: center;
+      padding: 16px 8px;
+    }
+
+    .badge-emblem {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      border: 3px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+    }
+
+    .score-big {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin: 4px 0;
+    }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .breakdown-card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+
+    .breakdown-val {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .transcript-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      line-height: 1.75;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 480px) {
+      .breakdown-grid {
+        grid-template-columns: 1fr;
+      }
+      .level-tab {
+        font-size: 0.82rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER -->
+    <header class="app-header">
+      <div>
+        <h1 class="brand-title">LinkFlow English</h1>
+        <p class="brand-subtitle">
+          American English Linking Coach <span class="zh">美式英語連音聽說訓練</span>
+        </p>
+      </div>
+      <button id="themeToggle" class="theme-btn" type="button" aria-label="Toggle color theme">
+        🌙 Dark
+      </button>
+    </header>
+
+    <!-- SPEECH / EN-US VOICE WARNING BANNER (Shown when TTS unsupported or no en-US voice exists) -->
+    <div id="voiceWarningBanner" class="banner banner-error" style="display: none; margin-bottom: 16px;"></div>
+
+    <!-- LEVEL PROGRESS NAVIGATION -->
+    <nav class="level-nav" aria-label="Game Levels">
+      <div class="level-tabs" id="levelTabs"></div>
+      <div class="progress-meta">
+        <span id="progressLabel">Level 1 / 3</span>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+      </div>
+    </nav>
+
+    <!-- MAIN DYNAMIC GAME VIEW -->
+    <main id="app" aria-live="polite"></main>
+  </div>
+
+  <script>
+    /* =========================================================================
+       TEACHER-EDITABLE CONTENT DATA OBJECT (GAME_DATA)
+       -------------------------------------------------------------------------
+       All spoken content is General American English (B1–B2 level).
+       Edit any text, questions, hints, or sentences here without changing the
+       game logic. Keep Level 2 dictation sentences identical to sentences inside
+       level1.talkSentences so Level 1 and Level 2 stay 100% consistent.
+       ========================================================================= */
+    const GAME_DATA = {
+      // -----------------------------------------------------------------------
+      // LEVEL 1: TOEIC Listening Part 4 Workplace Talk (213 words, B1–B2, en-US)
+      // Transcript stays hidden throughout Level 1; unlimited audio replays.
+      // -----------------------------------------------------------------------
+      level1: {
+        title: "Level 1: Workplace Listening",
+        titleZh: "第一關：職場聽力理解",
+        contextTag: "TOEIC Part 4 · Office Operations Briefing",
+        instructionsEn: "Listen to the workplace announcement in American English. Notice how final consonants link smoothly into the next word's vowel. After listening, answer three questions one at a time.",
+        instructionsZh: "請聆聽美式英語職場廣播，留意字尾子音如何自然連到下一個字的母音。聆聽後請依序回答三題選擇題。",
+        talkSentences: [
+          "Good morning, everyone, and thank you for joining this quick operations update before our weekly schedule gets underway.",
+          "Starting next Monday, our company is rolling out a new desk-booking app for all hybrid employees on the fourth floor.",
+          "Because our engineering and marketing teams have grown rapidly this quarter, open workstations have become hard to find during peak hours.",
+          "Many staff members recently asked for a fairer way to share seating across departments.",
+          "To solve this problem, we set up a simple reservation policy.",
+          "Please check in on the mobile app whenever you arrive at the office.",
+          "If you reserve a spot ahead of time, the system holds it until ten o'clock.",
+          "After that, any unclaimed desk automatically opens up for other colleagues to use.",
+          "In addition, our facilities crew will install extra power outlets and soundproof phone booths along the east wall this Friday afternoon.",
+          "Please clear off your desk before you leave on Thursday evening.",
+          "That way, our technicians can move around the floor safely while the elevator is reserved for equipment.",
+          "If you run into any login issues, reach out to the help desk right away.",
+          "We will send out a quick setup guide later today, and we appreciate your cooperation as we make our workspace more flexible for everyone."
+        ],
+        // Three MCQs in required order: 1. Main Idea, 2. Important Detail, 3. Speaker's Purpose
+        questions: [
+          {
+            type: "1. Main Idea 主旨題",
+            prompt: "What is the main topic of the announcement?",
+            options: [
+              "A) Training new staff on how to use company laptops",
+              "B) Introducing a new desk-booking app and upcoming office upgrades",
+              "C) Relocating the engineering and marketing teams to another building",
+              "D) Changing the weekly schedule for hybrid employees"
+            ],
+            correctIndex: 1,
+            explanation: "The speaker introduces a new desk-booking app for fourth-floor hybrid employees and announces Friday's installation of extra power outlets and soundproof phone booths."
+          },
+          {
+            type: "2. Important Detail 細節題",
+            prompt: "What happens if an employee reserves a desk but does not check in by ten o'clock?",
+            options: [
+              "A) The help desk automatically resets their mobile app password.",
+              "B) They must work inside a phone booth along the east wall.",
+              "C) The desk opens up for other colleagues to use.",
+              "D) Their supervisor receives an automated absence report."
+            ],
+            correctIndex: 2,
+            explanation: "The announcement states that the system holds a reserved spot until ten o'clock, and after that, any unclaimed desk opens up for other colleagues."
+          },
+          {
+            type: "3. Speaker's Purpose 目的題",
+            prompt: "Why does the speaker ask employees to clear off their desks on Thursday evening?",
+            options: [
+              "A) So technicians can safely install new outlets and phone booths on Friday",
+              "B) Because the cleaning crew will sanitize all fourth-floor keyboards",
+              "C) To prepare workstations for new interns arriving on Monday",
+              "D) Because personal items are banned from hybrid seating areas"
+            ],
+            correctIndex: 0,
+            explanation: "Employees are asked to clear off their desks on Thursday evening so technicians can move around the floor safely while installing power outlets and phone booths on Friday afternoon."
+          }
+        ]
+      },
+
+      // -----------------------------------------------------------------------
+      // LEVEL 2: Linking Dictation (4 verbatim sentences from Level 1 talk)
+      // Max 2 plays TOTAL per sentence (shared across Normal 1.0 and Slow 0.75).
+      // -----------------------------------------------------------------------
+      level2: {
+        title: "Level 2: Linking Dictation",
+        titleZh: "第二關：連音聽寫挑戰",
+        instructionsEn: "Listen to each sentence from the talk (maximum 2 plays total per sentence) and type what you hear across two attempts.",
+        instructionsZh: "聆聽廣播中的句子（每句總共最多播放 2 次），分兩次作答輸入你聽到的內容。",
+        items: [
+          {
+            sentence: "Please check in on the mobile app whenever you arrive at the office.",
+            soundHint: "Listen for two short verb-and-preposition chunks blending into one smooth rhythm, plus a final verb whose ending /v/ sound jumps directly onto the preposition before 'the office'.",
+            linkedDisplay: "Please <span class='link-mark'>check_in_on</span> the <span class='link-mark'>mobile_app</span> whenever you <span class='link-mark'>arrive_at</span> the office.",
+            links: [
+              { pair: "check_in_on", detail: "/k/ + /ɪ/ + /n/ + /ɑ/ → sounds like 'che-ki-non' with no pause." },
+              { pair: "mobile_app", detail: "/l/ + /æ/ → the final /l/ attaches directly to 'app' ('mo-bi-lapp')." },
+              { pair: "arrive_at", detail: "/v/ + /æ/ → the /v/ connects smoothly into 'at' ('a-rri-vat')." }
+            ]
+          },
+          {
+            sentence: "If you reserve a spot ahead of time, the system holds it until ten o'clock.",
+            soundHint: "Focus on short unstressed function words (an article, prepositions, and a pronoun) attaching directly to the final consonants of the stressed words right before them, with American /t/ flapping.",
+            linkedDisplay: "If you <span class='link-mark'>reserve_a</span> <span class='link-mark'>spot_ahead_of</span> time, the system <span class='link-mark'>holds_it_until</span> <span class='link-mark'>ten_o'clock</span>.",
+            links: [
+              { pair: "reserve_a", detail: "/v/ + /ə/ → sounds like 're-ser-va'." },
+              { pair: "spot_ahead_of", detail: "American flap /ɾ/ + /ə/ and /d/ + /ə/ → sounds like 'spo-da-hea-dof'." },
+              { pair: "holds_it_until", detail: "/z/ + /ɪ/ and flap /ɾ/ + /ʌ/ → sounds like 'hold-zi-dun-til'." },
+              { pair: "ten_o'clock", detail: "/n/ + /ə/ → 'te-no'clock'." }
+            ]
+          },
+          {
+            sentence: "Please clear off your desk before you leave on Thursday evening.",
+            soundHint: "Listen for a two-word phrasal verb near the start and a verb-plus-preposition pair in the middle—both link across word boundaries with zero pause.",
+            linkedDisplay: "Please <span class='link-mark'>clear_off</span> your desk before you <span class='link-mark'>leave_on</span> Thursday evening.",
+            links: [
+              { pair: "clear_off", detail: "American /r/ + /ɔ/ → the final /r/ glides straight into 'off' ('clea-roff')." },
+              { pair: "leave_on", detail: "/v/ + /ɑ/ → the /v/ joins 'on' ('lea-von')." }
+            ]
+          },
+          {
+            sentence: "If you run into any login issues, reach out to the help desk right away.",
+            soundHint: "Pay attention to three idiomatic phrases where a final consonant (/n/, /tʃ/, and flapped /t/) carries straight into the vowel at the start of the next word.",
+            linkedDisplay: "If you <span class='link-mark'>run_into</span> any <span class='link-mark'>login_issues</span>, <span class='link-mark'>reach_out</span> to the help desk <span class='link-mark'>right_away</span>.",
+            links: [
+              { pair: "run_into", detail: "/n/ + /ɪ/ → sounds like 'ru-nin-to'." },
+              { pair: "login_issues", detail: "/n/ + /ɪ/ → the /n/ links into the stressed vowel of 'issues' ('lo-gi-ni-ssues')." },
+              { pair: "reach_out", detail: "/tʃ/ + /aʊ/ → 'rea-chout'." },
+              { pair: "right_away", detail: "American flap /ɾ/ + /ə/ → sounds like 'righ-da-way'." }
+            ]
+          }
+        ],
+        patternSummary: [
+          {
+            pattern: "1. Phrasal Verbs & Prepositions 片語動詞與介系詞連音",
+            examples: "check_in_on, clear_off, run_into, reach_out",
+            tip: "Two-word verbs act like one vocabulary unit—never pause between the verb and its particle."
+          },
+          {
+            pattern: "2. Consonant + Unstressed Function Word 子音接非重音功能詞",
+            examples: "reserve_a, ahead_of, holds_it_until",
+            tip: "Short words like 'a', 'of', 'it', and 'until' shrink and attach onto the previous consonant."
+          },
+          {
+            pattern: "3. American /t/ Flapping Between Vowels 美式母音間 /t/ 閃音化",
+            examples: "spot_ahead, it_until, right_away",
+            tip: "In American English, a final /t/ between vowels softens into a quick /d/-like tap ('righ-da-way')."
+          }
+        ]
+      },
+
+      // -----------------------------------------------------------------------
+      // LEVEL 3: Shadowing Practice (5 NEW B1–B2 American English sentences)
+      // Model audio plays ONLY ONCE per sentence (speed chosen beforehand).
+      // -----------------------------------------------------------------------
+      level3: {
+        title: "Level 3: Shadowing Practice",
+        titleZh: "第三關：影子跟讀實戰",
+        instructionsEn: "Choose Normal (1.0) or Slow (0.75) BEFORE playing. You can play each model sentence only ONCE, then record yourself as many times as you like.",
+        instructionsZh: "播放前請先選擇正常 (1.0) 或慢速 (0.75)。每句示範音檔僅能播放 1 次，之後可無限次錄音自我檢核。",
+        items: [
+          {
+            situation: "Campus Library · Group Paper",
+            sentence: "Could you look over my draft and point out any weak arguments?",
+            linkedDisplay: "Could you <span class='link-mark'>look_over</span> my <span class='link-mark'>draft_and</span> <span class='link-mark'>point_out_any</span> weak arguments?",
+            note: "/k/ + /oʊ/ ('loo-ko-ver'), /t/ + /æ/ ('draf-tand'), and American flapped /t/ in 'point_out_any' ('poin-dou-de-ny')."
+          },
+          {
+            situation: "Airport Terminal · Conference Trip",
+            sentence: "We need to pick up our boarding passes before we head over to gate eight.",
+            linkedDisplay: "We need to <span class='link-mark'>pick_up_our</span> boarding passes before we <span class='link-mark'>head_over</span> to <span class='link-mark'>gate_eight</span>.",
+            note: "/k/ + /ʌ/ + /p/ + /aʊ/ ('pi-cku-pour'), /d/ + /oʊ/ ('hea-do-ver'), and flapped /t/ in 'gate_eight' ('ga-deight')."
+          },
+          {
+            situation: "Apartment Leasing Office · Move-In Day",
+            sentence: "Please fill out this form and drop it off at the front desk by five.",
+            linkedDisplay: "Please <span class='link-mark'>fill_out</span> this <span class='link-mark'>form_and</span> <span class='link-mark'>drop_it_off_at</span> the front desk by five.",
+            note: "/l/ + /aʊ/ ('fi-llout'), /m/ + /æ/ ('for-mand'), and 'dro-pi-do-ffat' with American flapping."
+          },
+          {
+            situation: "University Computer Lab · Closing Rules",
+            sentence: "Make sure you turn off all monitors and log out of your account after class.",
+            linkedDisplay: "Make sure you <span class='link-mark'>turn_off_all</span> monitors and <span class='link-mark'>log_out_of</span> <span class='link-mark'>your_account_after</span> class.",
+            note: "'tur-no-ffall', 'lo-gou-dof', and 'you-ra-ccoun-dafter' keep the rhythm smooth and natural."
+          },
+          {
+            situation: "Startup Expo · Product Demo",
+            sentence: "Feel free to stop by our booth if you want a quick tour of the app.",
+            linkedDisplay: "Feel free to stop <span class='link-mark'>by_our</span> booth if you <span class='link-mark'>want_a</span> quick <span class='link-mark'>tour_of</span> the app.",
+            note: "Smooth glide in 'by_our', American reduced 'want_a' ('wan-na' / 'wan-ta'), and /r/ + /ə/ in 'tour_of' ('tou-rof')."
+          }
+        ],
+        keepPracticingSummary: [
+          "Keep phrasal verbs connected: practice pairs like 'look_over', 'pick_up', 'fill_out', and 'turn_off' as single rhythm units.",
+          "Reduce unstressed function words: let 'a', 'of', 'at', 'our', and 'it' stay short so they attach onto the preceding consonant.",
+          "Use natural American /t/ flapping: in phrases like 'point_out_any', 'gate_eight', and 'drop_it_off_at', soften the /t/ between vowels instead of pausing."
+        ]
+      }
+    };
+
+    /* =========================================================================
+       IN-MEMORY APPLICATION STATE (No localStorage used)
+       ========================================================================= */
+    const state = {
+      theme: window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
+      currentView: "level1", // "level1" | "level2" | "level3" | "final"
+      unlockedLevels: { 1: true, 2: false, 3: false },
+      completedLevels: { 1: false, 2: false, 3: false },
+
+      // Audio & Strict en-US Voice State
+      speechRate: 1.0, // Strictly 1.0 (Normal) or 0.75 (Slow)
+      isSpeaking: false,
+      ttsSupported: typeof window !== "undefined" && "speechSynthesis" in window && "SpeechSynthesisUtterance" in window,
+      selectedVoice: null, // Locked single en-US SpeechSynthesisVoice instance
+      voiceSearchDone: false,
+
+      // Level 1 state
+      l1: {
+        hasListened: false,
+        qIndex: 0,
+        selectedOption: null,
+        answers: [],
+        showResult: false
+      },
+
+      // Level 2 state (max 2 plays total per sentence, shared across speeds)
+      l2: {
+        itemIndex: 0,
+        playsLeft: 2,
+        attempt: 1, // 1 = before attempt 1, 2 = after hint (before attempt 2), 3 = revealed & locked
+        draftText: "",
+        results: [],
+        showSummary: false
+      },
+
+      // Level 3 state (max 1 play per sentence, speed chosen beforehand)
+      l3: {
+        itemIndex: 0,
+        modelUsed: false,
+        micMode: "unknown", // "unknown" | "supported" | "fallback"
+        isRecording: false,
+        recordings: [], // array of blob URLs for current item (unlimited recordings)
+        fallbackDone: false,
+        checks: { linked: false, rhythm: false },
+        completedItems: 0,
+        showSummary: false
+      }
+    };
+
+    // Runtime audio/recording handles kept outside state object
+    let activeUtterance = null;
+    let activeSpeechToken = 0;
+    let lastPlayTapTimestamp = 0;
+    let mediaRecorder = null;
+    let mediaStream = null;
+    let recordedChunks = [];
+    let createdBlobUrls = [];
+
+    /* =========================================================================
+       STRICT GENERAL AMERICAN ENGLISH (en-US) VOICE LOADER & TTS ENGINE
+       ========================================================================= */
+    function isStrictEnUS(lang) {
+      if (!lang || typeof lang !== "string") return false;
+      return lang.trim().replace(/_/g, "-").toLowerCase() === "en-us";
+    }
+
+    function resolveEnUSVoice(isFinalCheck = false) {
+      if (!state.ttsSupported) {
+        state.voiceSearchDone = true;
+        return null;
+      }
+
+      // Reuse the exact same en-US voice once selected so accent & speaker never change
+      if (state.selectedVoice) {
+        return state.selectedVoice;
+      }
+
+      const voices = window.speechSynthesis.getVoices() || [];
+      const enUSVoices = voices.filter(v => isStrictEnUS(v.lang));
+
+      if (enUSVoices.length > 0) {
+        // Prefer natural-sounding General American English voices if present
+        const preferredNames = ["Samantha", "Google US English", "Aria", "Jenny", "Guy", "Aaron", "Alex", "Siri"];
+        let chosen = null;
+        for (const name of preferredNames) {
+          chosen = enUSVoices.find(v => v.name && v.name.includes(name));
+          if (chosen) break;
+        }
+        state.selectedVoice = chosen || enUSVoices[0];
+        state.voiceSearchDone = true;
+        return state.selectedVoice;
+      }
+
+      if (voices.length > 0 || isFinalCheck) {
+        state.voiceSearchDone = true;
+      }
+      return null;
+    }
+
+    function initVoiceLoader() {
+      if (!state.ttsSupported) {
+        state.voiceSearchDone = true;
+        return;
+      }
+
+      resolveEnUSVoice(false);
+
+      const handleVoicesChanged = () => {
+        const prev = state.selectedVoice;
+        resolveEnUSVoice(false);
+        if (prev !== state.selectedVoice) {
+          render();
+        }
+      };
+
+      if (typeof window.speechSynthesis.addEventListener === "function") {
+        window.speechSynthesis.addEventListener("voiceschanged", handleVoicesChanged);
+      } else {
+        window.speechSynthesis.onvoiceschanged = handleVoicesChanged;
+      }
+
+      // Retry schedule for browsers where getVoices() populates asynchronously
+      const retryDelays = [150, 500, 1200, 2500];
+      retryDelays.forEach((delay, idx) => {
+        setTimeout(() => {
+          if (!state.selectedVoice) {
+            const isLast = idx === retryDelays.length - 1;
+            resolveEnUSVoice(isLast);
+            render();
+          }
+        }, delay);
+      });
+    }
+
+    function canSpeakEnUS() {
+      if (!state.ttsSupported) return false;
+      const voice = resolveEnUSVoice(false);
+      return !!(voice && isStrictEnUS(voice.lang));
+    }
+
+    function stopSpeech() {
+      activeSpeechToken++;
+      if (state.ttsSupported) {
+        try {
+          window.speechSynthesis.cancel();
+        } catch (e) {
+          // Ignore browser cancellation quirks
+        }
+      }
+      activeUtterance = null;
+      state.isSpeaking = false;
+      updateAudioStatusUI();
+    }
+
+    function speakSequence(textOrArray, onComplete) {
+      if (!canSpeakEnUS()) return false;
+      stopSpeech();
+
+      const voice = state.selectedVoice;
+      if (!voice || !isStrictEnUS(voice.lang)) return false;
+
+      const segments = Array.isArray(textOrArray) ? textOrArray : [textOrArray];
+      const token = ++activeSpeechToken;
+      let idx = 0;
+
+      state.isSpeaking = true;
+      updateAudioStatusUI();
+
+      function speakNext() {
+        if (token !== activeSpeechToken) return;
+        if (idx >= segments.length) {
+          state.isSpeaking = false;
+          activeUtterance = null;
+          updateAudioStatusUI();
+          if (typeof onComplete === "function") onComplete();
+          return;
+        }
+
+        const utter = new SpeechSynthesisUtterance(segments[idx]);
+        utter.lang = "en-US";
+        utter.voice = voice;
+        utter.rate = state.speechRate === 0.75 ? 0.75 : 1.0;
+        utter.pitch = 1.0;
+
+        utter.onend = () => {
+          if (token !== activeSpeechToken) return;
+          idx++;
+          speakNext();
+        };
+
+        utter.onerror = () => {
+          if (token === activeSpeechToken) {
+            state.isSpeaking = false;
+            activeUtterance = null;
+            updateAudioStatusUI();
+          }
+        };
+
+        activeUtterance = utter;
+        window.speechSynthesis.speak(utter);
+      }
+
+      speakNext();
+      return true;
+    }
+
+    function setSpeechRate(rate) {
+      if (rate !== 1.0 && rate !== 0.75) return;
+      // In Level 3 active task, speed must be chosen BEFORE the single play
+      if (state.currentView === "level3" && !state.l3.showSummary && state.l3.modelUsed) {
+        return;
+      }
+      state.speechRate = rate;
+      if (state.isSpeaking) {
+        stopSpeech();
+      }
+      render();
+    }
+
+    function updateAudioStatusUI() {
+      const statusEl = document.getElementById("audioStatusText");
+      if (statusEl) {
+        const speedLabel = state.speechRate === 1.0 ? "Normal (1.0)" : "Slow (0.75)";
+        statusEl.textContent = state.isSpeaking
+          ? `🔊 Playing (${speedLabel})... 播放中`
+          : `Ready · Speed: ${speedLabel}`;
+      }
+    }
+
+    function renderVoiceWarningBanner() {
+      const banner = document.getElementById("voiceWarningBanner");
+      if (!banner) return;
+
+      if (!state.ttsSupported) {
+        banner.style.display = "block";
+        banner.innerHTML = `
+          <strong>Speech Synthesis Unsupported 瀏覽器不支援語音朗讀</strong>
+          <p style="margin: 6px 0 0;">
+            This browser does not support Web Speech API (<code>speechSynthesis</code>). Please open this file in Chrome, Edge, or Safari.
+            <br/><span class="zh">此瀏覽器不支援內建語音合成功能，請改用 Chrome、Edge 或 Safari 開啟本網頁。</span>
+          </p>
+        `;
+        return;
+      }
+
+      if (state.voiceSearchDone && !state.selectedVoice) {
+        banner.style.display = "block";
+        banner.innerHTML = `
+          <strong>No American English voice found 找不到美式英語語音，請改用其他瀏覽器或裝置</strong>
+          <p style="margin: 6px 0 6px;">
+            To ensure an authentic General American English (<code>en-US</code>) accent, other English accents are blocked. How to install an <strong>English (United States)</strong> voice:
+            <br/><span class="zh">為確保純正美式發音（en-US），系統不會使用其他口音替代。請依下列方式安裝美式英語語音：</span>
+          </p>
+          <ul style="margin: 4px 0 0; padding-left: 20px; font-size: 0.92rem;">
+            <li><strong>Windows:</strong> Settings ➔ Time &amp; language ➔ Speech ➔ Add voices ➔ <em>English (United States)</em></li>
+            <li><strong>macOS:</strong> System Settings ➔ Accessibility ➔ Spoken Content ➔ System Voice ➔ Manage Voices ➔ <em>English (United States)</em></li>
+            <li><strong>iPhone / iPad:</strong> Settings ➔ Accessibility ➔ Spoken Content ➔ Voices ➔ English ➔ <em>English (US)</em></li>
+            <li><strong>Android:</strong> Settings ➔ Accessibility ➔ Text-to-speech output ➔ Install voice data ➔ <em>English (United States)</em></li>
+          </ul>
+        `;
+        return;
+      }
+
+      banner.style.display = "none";
+    }
+
+    /* =========================================================================
+       MICROPHONE RECORDING ENGINE (MediaRecorder with graceful fallback)
+       ========================================================================= */
+    function checkMicSupport() {
+      return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+    }
+
+    function stopActiveStream() {
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+        mediaStream = null;
+      }
+    }
+
+    async function toggleRecording() {
+      if (state.l3.isRecording && mediaRecorder) {
+        try {
+          mediaRecorder.stop();
+        } catch (e) {
+          state.l3.isRecording = false;
+          stopActiveStream();
+          render();
+        }
+        return;
+      }
+
+      stopSpeech();
+
+      if (!checkMicSupport()) {
+        state.l3.micMode = "fallback";
+        render();
+        return;
+      }
+
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        state.l3.micMode = "supported";
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(mediaStream);
+
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data && event.data.size > 0) {
+            recordedChunks.push(event.data);
+          }
+        };
+
+        mediaRecorder.onstop = () => {
+          const mimeType = mediaRecorder.mimeType || "audio/webm";
+          const blob = new Blob(recordedChunks, { type: mimeType });
+          const url = URL.createObjectURL(blob);
+          createdBlobUrls.push(url);
+
+          state.l3.recordings.push(url);
+          state.l3.isRecording = false;
+          stopActiveStream();
+          render();
+        };
+
+        mediaRecorder.start();
+        state.l3.isRecording = true;
+        render();
+      } catch (err) {
+        stopActiveStream();
+        state.l3.isRecording = false;
+        state.l3.micMode = "fallback";
+        render();
+      }
+    }
+
+    function completeFallbackShadowing() {
+      state.l3.fallbackDone = true;
+      render();
+    }
+
+    /* =========================================================================
+       WORD COMPARISON & SCORING HELPERS FOR LEVEL 2 DICTATION
+       ========================================================================= */
+    function normalizeTokens(str) {
+      return str
+        .toLowerCase()
+        .replace(/[.,!?;:"()]/g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .split(" ")
+        .filter(Boolean);
+    }
+
+    function evaluateDictation(targetSentence, userSentence) {
+      const targetWordsClean = targetSentence.trim().split(/\s+/);
+      const targetNorm = normalizeTokens(targetSentence);
+      const userNorm = normalizeTokens(userSentence);
+
+      const m = targetNorm.length;
+      const n = userNorm.length;
+      const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+
+      for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+          if (targetNorm[i - 1] === userNorm[j - 1]) {
+            dp[i][j] = dp[i - 1][j - 1] + 1;
+          } else {
+            dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+          }
+        }
+      }
+
+      const matchedTargetIdx = new Set();
+      let i = m, j = n;
+      while (i > 0 && j > 0) {
+        if (targetNorm[i - 1] === userNorm[j - 1]) {
+          matchedTargetIdx.add(i - 1);
+          i--;
+          j--;
+        } else if (dp[i - 1][j] >= dp[i][j - 1]) {
+          i--;
+        } else {
+          j--;
+        }
+      }
+
+      const matchedCount = matchedTargetIdx.size;
+      const accuracyPct = m > 0 ? Math.round((matchedCount / m) * 100) : 0;
+      const points = Math.round((matchedCount / m) * 10);
+
+      const comparisonHtml = targetWordsClean
+        .map((rawWord, idx) => {
+          const isMatch = matchedTargetIdx.has(idx);
+          return isMatch
+            ? `<span class="word-match" title="Matched">✓ ${escapeHtml(rawWord)}</span>`
+            : `<span class="word-miss" title="Missing or different">${escapeHtml(rawWord)}</span>`;
+        })
+        .join(" ");
+
+      return {
+        matchedCount,
+        totalWords: m,
+        accuracyPct,
+        points,
+        comparisonHtml
+      };
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    /* =========================================================================
+       SCORE CALCULATION & LEVEL NAVIGATION
+       ========================================================================= */
+    function getScores() {
+      let l1Correct = 0;
+      GAME_DATA.level1.questions.forEach((q, idx) => {
+        if (state.l1.answers[idx] === q.correctIndex) l1Correct++;
+      });
+      const l1Points = l1Correct * 10; // 30 pts max
+      const l2Points = state.l2.results.reduce((sum, r) => sum + (r ? r.points : 0), 0); // 40 pts max
+      const l3Points = state.l3.completedItems * 6; // 30 pts max
+
+      return {
+        l1Correct,
+        l1Points,
+        l2Points,
+        l3Points,
+        total: l1Points + l2Points + l3Points
+      };
+    }
+
+    function renderNavigation() {
+      const tabsEl = document.getElementById("levelTabs");
+      const labelEl = document.getElementById("progressLabel");
+      const pctEl = document.getElementById("progressPercent");
+      const fillEl = document.getElementById("progressFill");
+
+      const levels = [
+        { id: 1, view: "level1", name: "Level 1", sub: "Listen 聽力" },
+        { id: 2, view: "level2", name: "Level 2", sub: "Dictation 聽寫" },
+        { id: 3, view: "level3", name: "Level 3", sub: "Shadowing 跟讀" }
+      ];
+
+      tabsEl.innerHTML = levels
+        .map(lvl => {
+          const unlocked = state.unlockedLevels[lvl.id];
+          const done = state.completedLevels[lvl.id];
+          const active = state.currentView === lvl.view || (state.currentView === "final" && lvl.id === 3);
+          const lockIcon = unlocked ? (done ? "✓ " : "") : "🔒 ";
+          const cls = [
+            "level-tab",
+            active ? "active" : "",
+            done ? "completed" : "",
+            !unlocked ? "locked" : ""
+          ].join(" ");
+
+          return `
+            <button
+              type="button"
+              class="${cls}"
+              ${!unlocked ? "disabled" : ""}
+              onclick="switchLevel('${lvl.view}', ${lvl.id})"
+            >
+              <span>${lockIcon}${lvl.name}</span>
+              <span class="tab-sub">${lvl.sub}</span>
+            </button>
+          `;
+        })
+        .join("");
+
+      const completedTasks =
+        state.l1.answers.length +
+        state.l2.results.length +
+        state.l3.completedItems;
+      const pct = Math.min(100, Math.round((completedTasks / 12) * 100));
+
+      const viewTitleMap = {
+        level1: "Level 1 / 3 · Listening Comprehension",
+        level2: "Level 2 / 3 · Linking Dictation",
+        level3: "Level 3 / 3 · Shadowing Practice",
+        final: "Course Complete · Final Summary"
+      };
+
+      labelEl.textContent = viewTitleMap[state.currentView] || "Level 1 / 3";
+      pctEl.textContent = `${pct}%`;
+      fillEl.style.width = `${pct}%`;
+    }
+
+    function switchLevel(view, levelNum) {
+      if (!state.unlockedLevels[levelNum]) return;
+      stopSpeech();
+      state.currentView = view;
+      render();
+    }
+
+    /* =========================================================================
+       REUSABLE SPEED TOGGLE & VOICE HEADER WIDGET
+       ========================================================================= */
+    function renderSpeedToggle(disabled = false) {
+      return `
+        <div class="speed-group" role="group" aria-label="Playback Speed">
+          <button
+            type="button"
+            class="speed-btn ${state.speechRate === 1.0 ? "active" : ""}"
+            ${disabled ? "disabled" : ""}
+            onclick="setSpeechRate(1.0)"
+          >
+            Normal (1.0)
+          </button>
+          <button
+            type="button"
+            class="speed-btn ${state.speechRate === 0.75 ? "active" : ""}"
+            ${disabled ? "disabled" : ""}
+            onclick="setSpeechRate(0.75)"
+          >
+            Slow (0.75)
+          </button>
+        </div>
+      `;
+    }
+
+    function getVoiceBadgeText() {
+      if (state.selectedVoice) {
+        return `🇺🇸 ${escapeHtml(state.selectedVoice.name)} (${escapeHtml(state.selectedVoice.lang)})`;
+      }
+      return "🇺🇸 en-US Voice Required";
+    }
+
+    /* =========================================================================
+       LEVEL 1 RENDERING & HANDLERS (Unlimited Replays, Transcript Hidden)
+       ========================================================================= */
+    function playLevel1Talk() {
+      const now = Date.now();
+      if (now - lastPlayTapTimestamp < 300) return;
+      lastPlayTapTimestamp = now;
+
+      if (!canSpeakEnUS()) return;
+      state.l1.hasListened = true;
+      speakSequence(GAME_DATA.level1.talkSentences);
+      render();
+    }
+
+    function selectL1Option(optIdx) {
+      state.l1.selectedOption = optIdx;
+      render();
+    }
+
+    function nextL1Question() {
+      if (state.l1.selectedOption === null) return;
+      state.l1.answers[state.l1.qIndex] = state.l1.selectedOption;
+      state.l1.selectedOption = null;
+
+      if (state.l1.qIndex < GAME_DATA.level1.questions.length - 1) {
+        state.l1.qIndex++;
+      } else {
+        stopSpeech();
+        state.l1.showResult = true;
+        state.completedLevels[1] = true;
+        state.unlockedLevels[2] = true;
+      }
+      render();
+    }
+
+    function renderLevel1() {
+      const data = GAME_DATA.level1;
+      const voiceReady = canSpeakEnUS();
+
+      if (state.l1.showResult) {
+        const scores = getScores();
+        const reviewHtml = data.questions
+          .map((q, idx) => {
+            const userChoice = state.l1.answers[idx];
+            const isCorrect = userChoice === q.correctIndex;
+            return `
+              <div class="banner ${isCorrect ? "banner-success" : "banner-error"}">
+                <div><strong>${escapeHtml(q.type)}:</strong> ${escapeHtml(q.prompt)}</div>
+                <div style="margin-top: 6px;">
+                  Your answer 你的答案: <strong>${escapeHtml(q.options[userChoice])}</strong>
+                  ${isCorrect ? " ✅ Correct!" : " ❌ Incorrect"}
+                </div>
+                ${
+                  !isCorrect
+                    ? `<div style="margin-top: 6px;">
+                         Correct answer 正確答案: <strong>${escapeHtml(q.options[q.correctIndex])}</strong><br/>
+                         <span>Why 說明: ${escapeHtml(q.explanation)}</span>
+                       </div>`
+                    : ""
+                }
+              </div>
+            `;
+          })
+          .join("");
+
+        return `
+          <section class="card">
+            <span class="badge-pill">Level 1 Complete · 第一關完成</span>
+            <h2 class="section-title">Listening Score: ${scores.l1Correct} / 3</h2>
+            <p class="instruction-box">
+              Well done! The transcript stays hidden until you finish the linking dictation in Level 2.
+              <br/><span class="zh">做得好！逐字稿將在完成第二關連音聽寫後公開。</span>
+            </p>
+            ${reviewHtml}
+            <div class="btn-row" style="margin-top: 18px;">
+              <button type="button" class="btn btn-primary btn-full" onclick="switchLevel('level2', 2)">
+                Unlock &amp; Start Level 2: Linking Dictation 前往第二關 ➔
+              </button>
+            </div>
+          </section>
+        `;
+      }
+
+      const q = data.questions[state.l1.qIndex];
+      const optionsHtml = q.options
+        .map((opt, idx) => {
+          const letter = ["A", "B", "C", "D"][idx];
+          const textWithoutPrefix = opt.replace(/^[A-D]\)\s*/, "");
+          const selected = state.l1.selectedOption === idx;
+          return `
+            <button
+              type="button"
+              class="mcq-option ${selected ? "selected" : ""}"
+              onclick="selectL1Option(${idx})"
+            >
+              <span class="mcq-letter">${letter}</span>
+              <span>${escapeHtml(textWithoutPrefix)}</span>
+            </button>
+          `;
+        })
+        .join("");
+
+      return `
+        <section class="card">
+          <span class="badge-pill">${escapeHtml(data.contextTag)}</span>
+          <h2 class="section-title">${escapeHtml(data.title)} <span class="zh">${escapeHtml(data.titleZh)}</span></h2>
+          <div class="instruction-box">
+            ${escapeHtml(data.instructionsEn)}<br/>
+            <span class="zh">${escapeHtml(data.instructionsZh)}</span>
+          </div>
+
+          <div class="hidden-audio-box">
+            <span>🎧</span>
+            <span>Workplace Audio Track (~90s) · Transcript Hidden 逐字稿已隱藏</span>
+          </div>
+
+          <div class="audio-panel">
+            <div class="audio-top-row">
+              <span class="play-counter-pill">Plays left: Unlimited 無限次重聽</span>
+              <span class="voice-tag">${getVoiceBadgeText()}</span>
+            </div>
+            <div class="audio-controls">
+              <button type="button" class="btn btn-primary" ${!voiceReady ? "disabled" : ""} onclick="playLevel1Talk()">
+                ▶️ Play 播放
+              </button>
+              <button type="button" class="btn btn-secondary" ${!voiceReady ? "disabled" : ""} onclick="playLevel1Talk()">
+                🔁 Replay 重聽
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="stopSpeech()">
+                ⏹️ Stop 停止
+              </button>
+              ${renderSpeedToggle(false)}
+            </div>
+            <div class="audio-status" id="audioStatusText">
+              Ready · Speed: ${state.speechRate === 1.0 ? "Normal (1.0)" : "Slow (0.75)"}
+            </div>
+          </div>
+
+          ${
+            !state.l1.hasListened
+              ? `<div class="banner banner-hint">
+                   <strong>👆 Tap Play 播放 above to listen to the announcement first.</strong><br/>
+                   <span class="zh">請先點擊上方「Play 播放」聆聽廣播，題目將在播放後顯示。</span>
+                 </div>`
+              : `<hr style="border: 0; border-top: 1px solid var(--border); margin: 18px 0;" />
+                 <div>
+                   <div class="badge-pill">Question ${state.l1.qIndex + 1} of 3 · ${escapeHtml(q.type)}</div>
+                   <h3 style="margin: 4px 0 12px; font-size: 1.12rem;">${escapeHtml(q.prompt)}</h3>
+                   <div class="mcq-list">
+                     ${optionsHtml}
+                   </div>
+                 </div>
+                 <div class="btn-row">
+                   <button
+                     type="button"
+                     class="btn btn-primary btn-full"
+                     ${state.l1.selectedOption === null ? "disabled" : ""}
+                     onclick="nextL1Question()"
+                   >
+                     ${state.l1.qIndex < 2 ? "Next Question 下一題 ➔" : "Finish Level 1 查看第一關成績 ➔"}
+                   </button>
+                 </div>`
+          }
+        </section>
+      `;
+    }
+
+    /* =========================================================================
+       LEVEL 2 RENDERING & HANDLERS (Strict 2-Play Limit Shared Across Speeds)
+       ========================================================================= */
+    function playLevel2Sentence() {
+      const now = Date.now();
+      if (now - lastPlayTapTimestamp < 300) return;
+      lastPlayTapTimestamp = now;
+
+      if (!canSpeakEnUS()) return;
+      if (state.l2.attempt === 3 || state.l2.playsLeft <= 0) return;
+
+      // Stop any ongoing speech first so a single tap never counts twice
+      stopSpeech();
+      state.l2.playsLeft = Math.max(0, state.l2.playsLeft - 1);
+
+      const item = GAME_DATA.level2.items[state.l2.itemIndex];
+      speakSequence(item.sentence);
+      render();
+    }
+
+    function updateL2Draft(value) {
+      state.l2.draftText = value;
+      const submitBtn = document.getElementById("l2SubmitBtn");
+      if (submitBtn) {
+        const hasPlayedAtLeastOnce = state.l2.playsLeft < 2;
+        submitBtn.disabled = value.trim().length === 0 || !hasPlayedAtLeastOnce;
+      }
+    }
+
+    function submitL2Attempt() {
+      const text = state.l2.draftText.trim();
+      const hasPlayedAtLeastOnce = state.l2.playsLeft < 2;
+      if (!text || !hasPlayedAtLeastOnce) return;
+
+      if (state.l2.attempt === 1) {
+        state.l2.attempt = 2;
+        render();
+      } else if (state.l2.attempt === 2) {
+        stopSpeech();
+        const item = GAME_DATA.level2.items[state.l2.itemIndex];
+        const evalResult = evaluateDictation(item.sentence, text);
+        state.l2.results[state.l2.itemIndex] = {
+          userText: text,
+          ...evalResult
+        };
+        // Reveal sentence & lock audio permanently for this item
+        state.l2.attempt = 3;
+        state.l2.playsLeft = 0;
+        render();
+      }
+    }
+
+    function nextL2Item() {
+      stopSpeech();
+      if (state.l2.itemIndex < GAME_DATA.level2.items.length - 1) {
+        state.l2.itemIndex++;
+        state.l2.playsLeft = 2;
+        state.l2.attempt = 1;
+        state.l2.draftText = "";
+      } else {
+        state.l2.showSummary = true;
+        state.completedLevels[2] = true;
+        state.unlockedLevels[3] = true;
+      }
+      render();
+    }
+
+    function renderLevel2() {
+      const data = GAME_DATA.level2;
+      const voiceReady = canSpeakEnUS();
+
+      if (state.l2.showSummary) {
+        const fullTranscript = GAME_DATA.level1.talkSentences.join(" ");
+        const patternsHtml = data.patternSummary
+          .map(
+            p => `
+            <div class="diff-box">
+              <strong>${escapeHtml(p.pattern)}</strong>
+              <div style="margin: 4px 0;"><span class="link-mark">${escapeHtml(p.examples)}</span></div>
+              <div style="font-size: 0.95rem; color: var(--text-muted);">${escapeHtml(p.tip)}</div>
+            </div>
+          `
+          )
+          .join("");
+
+        return `
+          <section class="card">
+            <span class="badge-pill">Level 2 Complete · 第二關完成</span>
+            <h2 class="section-title">Full Talk Transcript &amp; Linking Patterns</h2>
+            <p class="instruction-box">
+              Review the full transcript from Level 1 and the linking patterns you will apply in Level 3.
+              <br/><span class="zh">檢視第一關完整逐字稿與連音規則整理，準備進入第三關口說跟讀。</span>
+            </p>
+
+            <h3 style="margin: 14px 0 6px;">📜 Full Workplace Announcement Transcript 完整逐字稿</h3>
+            <div class="transcript-box">${escapeHtml(fullTranscript)}</div>
+
+            <h3 style="margin: 18px 0 6px;">🔗 Key Linking Patterns 連音重點整理</h3>
+            ${patternsHtml}
+
+            <div class="btn-row" style="margin-top: 18px;">
+              <button type="button" class="btn btn-primary btn-full" onclick="switchLevel('level3', 3)">
+                Unlock &amp; Start Level 3: Shadowing Practice 前往第三關 ➔
+              </button>
+            </div>
+          </section>
+        `;
+      }
+
+      const item = data.items[state.l2.itemIndex];
+      const isAttempt1 = state.l2.attempt === 1;
+      const isAttempt2 = state.l2.attempt === 2;
+      const isRevealed = state.l2.attempt === 3;
+      const result = state.l2.results[state.l2.itemIndex];
+      const hasPlayedAtLeastOnce = state.l2.playsLeft < 2;
+      const playDisabled = !voiceReady || isRevealed || state.l2.playsLeft <= 0;
+
+      return `
+        <section class="card">
+          <span class="badge-pill">Sentence ${state.l2.itemIndex + 1} of 4 · Attempt ${Math.min(state.l2.attempt, 2)} of 2</span>
+          <h2 class="section-title">${escapeHtml(data.title)} <span class="zh">${escapeHtml(data.titleZh)}</span></h2>
+          <div class="instruction-box">
+            ${escapeHtml(data.instructionsEn)}<br/>
+            <span class="zh">${escapeHtml(data.instructionsZh)}</span>
+          </div>
+
+          <div class="hidden-audio-box">
+            <span>🔒</span>
+            <span>${isRevealed ? "Sentence Revealed · Audio Locked 句子已公開且音檔鎖定" : "Sentence Text Hidden 句子文字隱藏中"}</span>
+          </div>
+
+          <div class="audio-panel">
+            <div class="audio-top-row">
+              <span class="play-counter-pill ${state.l2.playsLeft === 0 || isRevealed ? "exhausted" : ""}">
+                ${isRevealed ? "Audio locked 已鎖定 (0 left)" : `Plays left: ${state.l2.playsLeft} 剩餘次數：${state.l2.playsLeft}`}
+              </span>
+              <span class="voice-tag">${getVoiceBadgeText()}</span>
+            </div>
+            <div class="audio-controls">
+              <button type="button" class="btn btn-primary" ${playDisabled ? "disabled" : ""} onclick="playLevel2Sentence()">
+                ▶️ Play 播放 (${state.l2.playsLeft} left)
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="stopSpeech()">
+                ⏹️ Stop 停止
+              </button>
+              ${renderSpeedToggle(isRevealed)}
+            </div>
+            <div class="audio-status" id="audioStatusText">
+              Ready · Speed: ${state.speechRate === 1.0 ? "Normal (1.0)" : "Slow (0.75)"}
+            </div>
+          </div>
+
+          <label for="dictationBox" style="display: block; font-weight: 700; margin-bottom: 6px;">
+            Type what you hear 請輸入你聽到的英文句子:
+          </label>
+          <textarea
+            id="dictationBox"
+            class="dictation-input"
+            placeholder="Tap Play first, then type the sentence you hear..."
+            ${isRevealed ? "readonly" : ""}
+            oninput="updateL2Draft(this.value)"
+          >${escapeHtml(state.l2.draftText)}</textarea>
+
+          ${
+            !isRevealed
+              ? `<div class="btn-row">
+                   <button
+                     id="l2SubmitBtn"
+                     type="button"
+                     class="btn btn-primary btn-full"
+                     ${state.l2.draftText.trim().length === 0 || !hasPlayedAtLeastOnce ? "disabled" : ""}
+                     onclick="submitL2Attempt()"
+                   >
+                     ${isAttempt1 ? "Submit Attempt 1 提交第一次作答" : "Submit Final Attempt 提交第二次作答"}
+                   </button>
+                 </div>`
+              : ""
+          }
+
+          ${
+            isAttempt2
+              ? `<div class="banner banner-hint">
+                   <strong>🎧 Sound Hint 語音提示 (Attempt 1 Submitted):</strong>
+                   <p style="margin: 6px 0 0;">${escapeHtml(item.soundHint)}</p>
+                   <p style="margin: 6px 0 0; font-size: 0.92rem;">
+                     ${
+                       state.l2.playsLeft > 0
+                         ? "Use your final play above, revise your answer, and submit Attempt 2."
+                         : "You already used both plays. Revise your answer from memory and submit Attempt 2."
+                     }
+                     <span class="zh">${
+                       state.l2.playsLeft > 0
+                         ? "請使用最後一次播放機會重聽並修改上方答案後提交。"
+                         : "兩次播放皆已使用完畢，請依記憶修改答案後提交。"
+                     }</span>
+                   </p>
+                 </div>`
+              : ""
+          }
+
+          ${
+            isRevealed && result
+              ? `<div class="banner banner-success">
+                   <strong>✅ Original Sentence &amp; Linking Breakdown 原句與連音解析 (${result.accuracyPct}% match · +${result.points} pts)</strong>
+                   <div class="linked-sentence">${item.linkedDisplay}</div>
+                   <ul class="link-list">
+                     ${item.links
+                       .map(l => `<li><strong>${escapeHtml(l.pair)}:</strong> ${escapeHtml(l.detail)}</li>`)
+                       .join("")}
+                   </ul>
+                 </div>
+
+                 <div class="diff-box">
+                   <div class="diff-label">Word Comparison 單字比對 (Green = Matched, Red = Missing/Different)</div>
+                   <div>${result.comparisonHtml}</div>
+                   <div style="margin-top: 8px; font-size: 0.92rem; color: var(--text-muted);">
+                     Your final answer: "${escapeHtml(result.userText)}"
+                   </div>
+                 </div>
+
+                 <div class="btn-row" style="margin-top: 16px;">
+                   <button type="button" class="btn btn-primary btn-full" onclick="nextL2Item()">
+                     ${state.l2.itemIndex < 3 ? "Next Sentence 下一句 ➔" : "View Transcript & Linking Summary 查看逐字稿與重點 ➔"}
+                   </button>
+                 </div>`
+              : ""
+          }
+        </section>
+      `;
+    }
+
+    /* =========================================================================
+       LEVEL 3 RENDERING & HANDLERS (1 Model Play Limit, Unlimited Recordings)
+       ========================================================================= */
+    function playLevel3ModelOnce() {
+      const now = Date.now();
+      if (now - lastPlayTapTimestamp < 300) return;
+      lastPlayTapTimestamp = now;
+
+      if (!canSpeakEnUS()) return;
+      if (state.l3.modelUsed) return;
+
+      stopSpeech();
+      state.l3.modelUsed = true;
+      const item = GAME_DATA.level3.items[state.l3.itemIndex];
+      speakSequence(item.sentence);
+      render();
+    }
+
+    function playLevel3Review(index) {
+      const now = Date.now();
+      if (now - lastPlayTapTimestamp < 300) return;
+      lastPlayTapTimestamp = now;
+
+      if (!canSpeakEnUS()) return;
+      const item = GAME_DATA.level3.items[index];
+      if (!item) return;
+      speakSequence(item.sentence);
+    }
+
+    function toggleL3Check(key, checked) {
+      state.l3.checks[key] = checked;
+      render();
+    }
+
+    function nextL3Item() {
+      stopSpeech();
+      const hasPracticed = state.l3.recordings.length > 0 || state.l3.fallbackDone;
+      const bothChecked = state.l3.checks.linked && state.l3.checks.rhythm;
+      if (!state.l3.modelUsed || !hasPracticed || !bothChecked || state.l3.isRecording) return;
+
+      state.l3.completedItems = Math.max(state.l3.completedItems, state.l3.itemIndex + 1);
+
+      if (state.l3.itemIndex < GAME_DATA.level3.items.length - 1) {
+        state.l3.itemIndex++;
+        state.l3.modelUsed = false;
+        state.l3.recordings = [];
+        state.l3.fallbackDone = false;
+        state.l3.checks = { linked: false, rhythm: false };
+      } else {
+        state.l3.showSummary = true;
+        state.completedLevels[3] = true;
+      }
+      render();
+    }
+
+    function finishToFinalSummary() {
+      stopSpeech();
+      state.currentView = "final";
+      render();
+    }
+
+    function renderLevel3() {
+      const data = GAME_DATA.level3;
+      const voiceReady = canSpeakEnUS();
+
+      // Summary screen after all 5 shadowing sentences: Reveal all + unlimited Review audio
+      if (state.l3.showSummary) {
+        const revealedHtml = data.items
+          .map(
+            (item, idx) => `
+            <div class="diff-box">
+              <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px;">
+                <div class="diff-label" style="margin: 0;">Sentence ${idx + 1} · ${escapeHtml(item.situation)}</div>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  ${!voiceReady ? "disabled" : ""}
+                  onclick="playLevel3Review(${idx})"
+                >
+                  🔊 Review 複習
+                </button>
+              </div>
+              <div class="linked-sentence">${item.linkedDisplay}</div>
+              <div style="font-size: 0.93rem; color: var(--text-muted);">${escapeHtml(item.note)}</div>
+            </div>
+          `
+          )
+          .join("");
+
+        const tipsHtml = data.keepPracticingSummary
+          .map(tip => `<li style="margin-bottom: 8px;">${escapeHtml(tip)}</li>`)
+          .join("");
+
+        return `
+          <section class="card">
+            <span class="badge-pill">Level 3 Complete · 第三關完成</span>
+            <h2 class="section-title">Shadowing Sentences &amp; Practice Guide</h2>
+            <p class="instruction-box">
+              All five sentences and their consonant-to-vowel links are now revealed. You can now use <strong>Review 複習</strong> (unlimited) with the same American English voice.
+              <br/><span class="zh">五個練習句與連音標記已全部公開，現在可無限次點擊「Review 複習」聆聽原音。</span>
+            </p>
+
+            <div class="audio-panel">
+              <div class="audio-top-row">
+                <span class="play-counter-pill">Review Mode: Unlimited 無限次複習</span>
+                <span class="voice-tag">${getVoiceBadgeText()}</span>
+              </div>
+              <div class="audio-controls">
+                ${renderSpeedToggle(false)}
+                <button type="button" class="btn btn-secondary" onclick="stopSpeech()">
+                  ⏹️ Stop 停止
+                </button>
+              </div>
+              <div class="audio-status" id="audioStatusText">
+                Ready · Speed: ${state.speechRate === 1.0 ? "Normal (1.0)" : "Slow (0.75)"}
+              </div>
+            </div>
+
+            ${revealedHtml}
+
+            <div class="banner banner-hint" style="margin-top: 16px;">
+              <strong>🎯 What to Keep Practicing 持續練習重點:</strong>
+              <ul style="margin: 8px 0 0; padding-left: 20px;">
+                ${tipsHtml}
+              </ul>
+            </div>
+
+            <div class="btn-row" style="margin-top: 18px;">
+              <button type="button" class="btn btn-primary btn-full" onclick="finishToFinalSummary()">
+                View Final Score &amp; Badge 查看總成績與徽章 🏆
+              </button>
+            </div>
+          </section>
+        `;
+      }
+
+      const item = data.items[state.l3.itemIndex];
+      const isFallback = state.l3.micMode === "fallback";
+      const hasPracticed = state.l3.recordings.length > 0 || state.l3.fallbackDone;
+      const bothChecked = state.l3.checks.linked && state.l3.checks.rhythm;
+
+      const recordingsHtml = state.l3.recordings
+        .map(
+          (url, idx) => `
+          <div style="margin-top: 10px;">
+            <div style="font-size: 0.9rem; font-weight: 700;">Recording #${idx + 1} 第 ${idx + 1} 次錄音:</div>
+            <audio controls src="${url}"></audio>
+          </div>
+        `
+        )
+        .join("");
+
+      return `
+        <section class="card">
+          <span class="badge-pill">Sentence ${state.l3.itemIndex + 1} of 5</span>
+          <h2 class="section-title">${escapeHtml(data.title)} <span class="zh">${escapeHtml(data.titleZh)}</span></h2>
+          <div class="instruction-box">
+            ${escapeHtml(data.instructionsEn)}<br/>
+            <span class="zh">${escapeHtml(data.instructionsZh)}</span>
+          </div>
+
+          <div class="hidden-audio-box">
+            <span>🗣️</span>
+            <span>Context: ${escapeHtml(item.situation)} · Text Hidden 文字隱藏中</span>
+          </div>
+
+          <!-- SINGLE-PLAY MODEL AUDIO PANEL -->
+          <div class="audio-panel">
+            <div class="audio-top-row">
+              <span class="play-counter-pill ${state.l3.modelUsed ? "exhausted" : ""}">
+                ${state.l3.modelUsed ? "Model audio used 已使用 (Plays left: 0)" : "Plays left: 1 剩餘次數：1"}
+              </span>
+              <span class="voice-tag">${getVoiceBadgeText()}</span>
+            </div>
+            <div class="audio-controls">
+              <button
+                type="button"
+                class="btn btn-primary"
+                ${!voiceReady || state.l3.modelUsed ? "disabled" : ""}
+                onclick="playLevel3ModelOnce()"
+              >
+                ${state.l3.modelUsed ? "🔒 Model audio used 已使用" : "▶️ Play Model 播放示範 (1x)"}
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="stopSpeech()">
+                ⏹️ Stop 停止
+              </button>
+              ${renderSpeedToggle(state.l3.modelUsed)}
+            </div>
+            <div class="audio-status" id="audioStatusText">
+              ${
+                state.l3.modelUsed
+                  ? "Model audio used 已使用 · Rely on your memory of the model while checking your recording."
+                  : `Choose Normal (1.0) or Slow (0.75) BEFORE playing · Speed: ${state.speechRate === 1.0 ? "Normal (1.0)" : "Slow (0.75)"}`
+              }
+            </div>
+          </div>
+
+          ${
+            isFallback
+              ? `<div class="banner banner-hint" style="margin-bottom: 12px;">
+                   <strong>🎙️ Microphone Unavailable 無麥克風模式:</strong>
+                   Microphone access was denied or is unsupported in this browser. Listen to the model once, shadow aloud from memory, and tap below to mark your practice complete.
+                 </div>`
+              : ""
+          }
+
+          <!-- RECORDING CONTROLS (Unlimited recordings allowed after model play) -->
+          <div class="compare-item">
+            <strong>Step 2: Record Your Shadowing 錄音跟讀 (Unlimited recordings 可無限次重錄)</strong>
+            <p style="margin: 4px 0 10px; font-size: 0.94rem; color: var(--text-muted);">
+              ${
+                !state.l3.modelUsed
+                  ? "Listen to the model audio first, then repeat the sentence smoothly."
+                  : "The model audio is no longer available—rely on your memory of it and record as many takes as you want."
+              }
+            </p>
+
+            ${
+              !isFallback
+                ? `<button
+                     type="button"
+                     class="btn btn-record btn-full ${state.l3.isRecording ? "recording" : ""}"
+                     ${!state.l3.modelUsed ? "disabled" : ""}
+                     onclick="toggleRecording()"
+                   >
+                     ${
+                       state.l3.isRecording
+                         ? "⏹️ Stop Recording 停止錄音"
+                         : state.l3.recordings.length > 0
+                         ? "🎙️ Record Again 重新錄音 (Unlimited)"
+                         : "🎙️ Record 開始錄音"
+                     }
+                   </button>`
+                : `<button
+                     type="button"
+                     class="btn btn-secondary btn-full"
+                     ${!state.l3.modelUsed ? "disabled" : ""}
+                     onclick="completeFallbackShadowing()"
+                   >
+                     ${state.l3.fallbackDone ? "✅ Shadowing Completed 已完成無錄音跟讀" : "🗣️ Complete Shadowing 完成無錄音跟讀"}
+                   </button>`
+            }
+
+            ${
+              state.l3.recordings.length > 0
+                ? `<div style="margin-top: 12px;">
+                     <strong>🎧 Your Recordings 你的錄音回放 (Unlimited playback 可無限次重聽):</strong>
+                     <p style="margin: 4px 0 6px; font-size: 0.88rem; color: var(--text-muted);">
+                       Because the model audio is no longer available, rely on your memory of the speaker's linking and rhythm as you listen back.
+                     </p>
+                     ${recordingsHtml}
+                   </div>`
+                : ""
+            }
+          </div>
+
+          <!-- SELF-CHECK LIST (No automated pronunciation scoring claim) -->
+          ${
+            hasPracticed
+              ? `<div style="margin-top: 14px;">
+                   <strong>Self-Check List 自我檢核 (Rely on your memory of the model):</strong>
+                   <div class="checklist">
+                     <label class="check-row">
+                       <input
+                         type="checkbox"
+                         ${state.l3.checks.linked ? "checked" : ""}
+                         onchange="toggleL3Check('linked', this.checked)"
+                       />
+                       <span>Did I connect the linked words? <span class="zh">我有把連音字順暢連在一起嗎？</span></span>
+                     </label>
+                     <label class="check-row">
+                       <input
+                         type="checkbox"
+                         ${state.l3.checks.rhythm ? "checked" : ""}
+                         onchange="toggleL3Check('rhythm', this.checked)"
+                       />
+                       <span>Was my rhythm similar? <span class="zh">我的語調與節奏是否接近示範？</span></span>
+                     </label>
+                   </div>
+                 </div>`
+              : ""
+          }
+
+          <div class="btn-row" style="margin-top: 16px;">
+            <button
+              type="button"
+              class="btn btn-primary btn-full"
+              ${!state.l3.modelUsed || !hasPracticed || !bothChecked || state.l3.isRecording ? "disabled" : ""}
+              onclick="nextL3Item()"
+            >
+              ${state.l3.itemIndex < 4 ? "Next Sentence 下一句 ➔" : "Reveal All Sentences & Summary 查看全部句子與總結 ➔"}
+            </button>
+          </div>
+        </section>
+      `;
+    }
+
+    /* =========================================================================
+       FINAL COMPLETION SCREEN & RESTART
+       ========================================================================= */
+    function restartGame() {
+      stopSpeech();
+      stopActiveStream();
+      createdBlobUrls.forEach(url => URL.revokeObjectURL(url));
+      createdBlobUrls = [];
+
+      state.currentView = "level1";
+      state.unlockedLevels = { 1: true, 2: false, 3: false };
+      state.completedLevels = { 1: false, 2: false, 3: false };
+      state.speechRate = 1.0;
+
+      state.l1 = {
+        hasListened: false,
+        qIndex: 0,
+        selectedOption: null,
+        answers: [],
+        showResult: false
+      };
+
+      state.l2 = {
+        itemIndex: 0,
+        playsLeft: 2,
+        attempt: 1,
+        draftText: "",
+        results: [],
+        showSummary: false
+      };
+
+      state.l3 = {
+        itemIndex: 0,
+        modelUsed: false,
+        micMode: state.l3.micMode,
+        isRecording: false,
+        recordings: [],
+        fallbackDone: false,
+        checks: { linked: false, rhythm: false },
+        completedItems: 0,
+        showSummary: false
+      };
+
+      render();
+    }
+
+    function renderFinalScreen() {
+      const scores = getScores();
+      let badgeIcon = "🎧";
+      let badgeTitle = "Active Linking Listener · 專注連音學習者";
+      if (scores.total >= 85) {
+        badgeIcon = "🏆";
+        badgeTitle = "Linking Master · 連音聽說大師";
+      } else if (scores.total >= 65) {
+        badgeIcon = "🌟";
+        badgeTitle = "Rhythm Builder · 英語節奏好手";
+      }
+
+      return `
+        <section class="card">
+          <div class="score-hero">
+            <div class="badge-emblem" aria-hidden="true">${badgeIcon}</div>
+            <span class="badge-pill">Training Complete · 課程完成</span>
+            <h2 class="section-title" style="margin-top: 6px;">${badgeTitle}</h2>
+            <div class="score-big">${scores.total} / 100 pts</div>
+            <p style="color: var(--text-muted); margin: 4px 0 0;">
+              Combined score across Listening, Linking Dictation, and Shadowing Practice.
+            </p>
+          </div>
+
+          <div class="breakdown-grid">
+            <div class="breakdown-card">
+              <div style="font-size: 0.85rem; color: var(--text-muted);">Level 1 · Listening</div>
+              <div class="breakdown-val">${scores.l1Points} / 30</div>
+              <div style="font-size: 0.82rem;">(${scores.l1Correct}/3 correct)</div>
+            </div>
+            <div class="breakdown-card">
+              <div style="font-size: 0.85rem; color: var(--text-muted);">Level 2 · Dictation</div>
+              <div class="breakdown-val">${scores.l2Points} / 40</div>
+              <div style="font-size: 0.82rem;">(4 sentences)</div>
+            </div>
+            <div class="breakdown-card">
+              <div style="font-size: 0.85rem; color: var(--text-muted);">Level 3 · Shadowing</div>
+              <div class="breakdown-val">${scores.l3Points} / 30</div>
+              <div style="font-size: 0.82rem;">(${state.l3.completedItems}/5 practiced)</div>
+            </div>
+          </div>
+
+          <div class="btn-row" style="margin-top: 18px;">
+            <button type="button" class="btn btn-primary btn-full" onclick="restartGame()">
+              🔄 Restart Game 重新開始練習
+            </button>
+          </div>
+        </section>
+      `;
+    }
+
+    /* =========================================================================
+       THEME & MASTER RENDER LOOP
+       ========================================================================= */
+    function applyTheme() {
+      document.documentElement.setAttribute("data-theme", state.theme);
+      const toggleBtn = document.getElementById("themeToggle");
+      if (toggleBtn) {
+        toggleBtn.textContent = state.theme === "dark" ? "☀️ Light" : "🌙 Dark";
+      }
+    }
+
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      state.theme = state.theme === "dark" ? "light" : "dark";
+      applyTheme();
+    });
+
+    function render() {
+      applyTheme();
+      renderVoiceWarningBanner();
+      renderNavigation();
+
+      const appEl = document.getElementById("app");
+      if (state.currentView === "level1") {
+        appEl.innerHTML = renderLevel1();
+      } else if (state.currentView === "level2") {
+        appEl.innerHTML = renderLevel2();
+      } else if (state.currentView === "level3") {
+        appEl.innerHTML = renderLevel3();
+      } else {
+        appEl.innerHTML = renderFinalScreen();
+      }
+    }
+
+    // Load strict en-US voice and initialize app
+    initVoiceLoader();
+    render();
+  </script>
+</body>
+</html>
